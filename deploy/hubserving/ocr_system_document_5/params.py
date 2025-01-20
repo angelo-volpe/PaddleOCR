@@ -26,7 +26,7 @@ def read_params():
 
     # params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_model_dir = "./models/en_PP-OCRv3_det_infer/"
+    cfg.det_model_dir = "./models/document_5_model_infer/"
     cfg.det_limit_side_len = 960
     cfg.det_limit_type = "max"
 
@@ -34,7 +34,7 @@ def read_params():
     cfg.det_db_thresh = 0.3
     cfg.det_db_box_thresh = 0.6
     cfg.det_db_unclip_ratio = 1.6
-    cfg.use_dilation = True
+    cfg.use_dilation = False
     cfg.det_db_score_mode = "fast"
 
     # EAST parmas
@@ -51,7 +51,7 @@ def read_params():
     cfg.rec_batch_num = 6
     cfg.max_text_length = 25
 
-    cfg.rec_char_dict_path = "./ppocr/utils/en_dict.txt" # "./ppocr/utils/EN_symbol_dict.txt"
+    cfg.rec_char_dict_path = "./ppocr/utils/en_dict.txt"
     cfg.use_space_char = True
 
     # params for text classifier
