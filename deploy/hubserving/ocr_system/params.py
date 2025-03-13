@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+import os
 
 
 class Config(object):
@@ -26,7 +27,7 @@ def read_params():
 
     # params for text detector
     cfg.det_algorithm = "DB"
-    cfg.det_model_dir = "./models/en_PP-OCRv3_det_infer/"
+    cfg.det_model_dir = "./models/en_PP-OCRv3_det_infer" # "./models/document_19_model_infer" # os.environ.get("DET_MODEL_PATH")
     cfg.det_limit_side_len = 960
     cfg.det_limit_type = "max"
 
@@ -51,7 +52,7 @@ def read_params():
     cfg.rec_batch_num = 6
     cfg.max_text_length = 25
 
-    cfg.rec_char_dict_path = "./ppocr/utils/en_dict.txt" # "./ppocr/utils/EN_symbol_dict.txt"
+    cfg.rec_char_dict_path = "./ppocr/utils/en_dict.txt"
     cfg.use_space_char = True
 
     # params for text classifier

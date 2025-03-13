@@ -1,0 +1,37 @@
+FROM python:3.12-slim
+
+ARG DOCUMENT_ID
+
+RUN apt-get update && apt-get install -y \
+    build-essential libgl1 libglib2.0-0 wget
+
+RUN pip install --upgrade pip
+RUN pip install paddlepaddle==2.6.0
+RUN pip install setuptools==75.8.0
+RUN pip install paddlehub==2.4.0
+
+COPY ./tools /app/tools
+COPY ./ppocr /app/ppocr
+COPY ./deploy/hubserving/ocr_system /app/deploy/hubserving/ocr_system
+COPY ./requirements.txt /app/requirements.txt
+
+# copy fine-tuned detection model
+COPY ./models/document_${DOCUMENT_ID}_model_infer /app/models/document_${DOCUMENT_ID}_model_infer
+
+# download recognition model
+RUN cd /app/models && \
+    wget https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar && \
+    tar xf en_PP-OCRv4_rec_infer.tar && rm -rf en_PP-OCRv4_rec_infer.tar
+
+# download text angle classifier model
+RUN cd /app/models && \
+    wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar && \
+    tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && rm -rf ch_ppocr_mobile_v2.0_cls_infer.tar
+
+RUN pip install -r /app/requirements.txt
+
+WORKDIR /app
+
+ENV DET_MODEL_PATH=./models/document_${DOCUMENT_ID}_model_infer
+
+RUN hub install deploy/hubserving/ocr_system

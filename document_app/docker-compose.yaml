@@ -1,0 +1,19 @@
+services:
+  inference-service:
+    build: 
+      context: ../
+      dockerfile: ./document_app/Dockerfile_inference
+      args:
+        DOCUMENT_ID: 5
+    command: hub serving start -m ocr_system
+    shm_size: 1gb
+    ports:
+      - "8866:8866"
+    networks:
+      - document_app_shared_network
+
+networks:
+  document_app_shared_network:
+    external: true
+
+# TODO use common volume for model storage
